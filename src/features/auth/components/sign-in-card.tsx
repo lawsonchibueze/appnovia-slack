@@ -11,25 +11,24 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {FcGoogle, } from "react-icons/fc"
-import {FaGithub} from "react-icons/fa"
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import { SignInFlow } from "../types";
 import { useState } from "react";
 
 interface SignInCardProps {
-    setState: (state:SignInFlow) => void
-
+  setState: (state: SignInFlow) => void;
 }
 
-export const SignInCard = ({setState}: SignInCardProps) => {
-    const {signIn} = useAuthActions()
+export const SignInCard = ({ setState }: SignInCardProps) => {
+  const { signIn } = useAuthActions();
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const handleProviderSigin = (value:"github" | "google") => {
-        signIn(value)
-    }
+  const handleProviderSigin = (value: "github" | "google") => {
+    signIn(value);
+  };
   return (
     <Card className="w-full h-full p-8">
       <CardHeader className="px-0 pt-0">
@@ -56,7 +55,12 @@ export const SignInCard = ({setState}: SignInCardProps) => {
             type="password"
             required
           />
-          <Button type="submit" disabled={false} size="lg" className="w-full">
+          <Button
+            type="submit"
+            disabled={false}
+            size="lg"
+            className="w-full bg-[#1c325B]"
+          >
             Continue
           </Button>
         </form>
@@ -82,11 +86,14 @@ export const SignInCard = ({setState}: SignInCardProps) => {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-            Don&apos;t have and account ? <span className="text-sky-700 hover:underline cursor-pointer" onClick={() => setState("signUp")}>Sign up</span>
-
+          Don&apos;t have and account ?{" "}
+          <span
+            className="text-sky-700 hover:underline cursor-pointer"
+            onClick={() => setState("signUp")}
+          >
+            Sign up
+          </span>
         </p>
-
-
       </CardContent>
     </Card>
   );

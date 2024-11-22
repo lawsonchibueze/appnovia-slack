@@ -8,20 +8,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {FcGoogle, } from "react-icons/fc"
-import {FaGithub} from "react-icons/fa"
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import { SignInFlow } from "../types";
 import { useState } from "react";
 
 interface SignUpCardProps {
-    setState: (state:SignInFlow) => void
-
+  setState: (state: SignInFlow) => void;
 }
 
-export const SignUpCard = ({setState}: SignUpCardProps) => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
+export const SignUpCard = ({ setState }: SignUpCardProps) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   return (
     <Card className="w-full h-full p-8">
       <CardHeader className="px-0 pt-0">
@@ -56,7 +55,12 @@ export const SignUpCard = ({setState}: SignUpCardProps) => {
             type="password"
             required
           />
-          <Button type="submit" disabled={false} size="lg" className="w-full">
+          <Button
+            type="submit"
+            disabled={false}
+            size="lg"
+            className="w-full bg-[#1c325B]"
+          >
             Continue
           </Button>
         </form>
@@ -82,11 +86,14 @@ export const SignUpCard = ({setState}: SignUpCardProps) => {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-            Already have an account? <span className="text-sky-700 hover:underline cursor-pointer" onClick={() => setState("signIn")}>Sign in</span>
-
+          Already have an account?{" "}
+          <span
+            className="text-sky-700 hover:underline cursor-pointer"
+            onClick={() => setState("signIn")}
+          >
+            Sign in
+          </span>
         </p>
-
-
       </CardContent>
     </Card>
   );
