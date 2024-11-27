@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: "https://novia-teams.vercel.app",
+      domain: process.env.CONVEX_SITE_URL,
       applicationID: "convex",
     },
   ],
