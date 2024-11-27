@@ -1,7 +1,10 @@
+import { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+import { TriangleAlert } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
 
 import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardContent,
@@ -11,10 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+
 import { SignInFlow } from "../types";
-import { useState } from "react";
 
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
@@ -25,10 +26,29 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
 
-  const handleProviderSigin = (value: "github" | "google") => {
-    signIn(value);
+  const onPasswordSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setPending(true);
+    signIn("password", { email, password, flow: "signIn" })
+      .catch(() => {
+        setError("Invalid email or password");
+      })
+      .finally(() => {
+        setPending(false);
+      });
   };
+
+  const onProviderSignIn = (value: "github" | "google") => {
+    setPending(true);
+    signIn(value).finally(() => {
+      setPending(false);
+    });
+  };
+
   return (
     <Card className="w-full h-full p-8">
       <CardHeader className="px-0 pt-0">
@@ -37,10 +57,16 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           Use your email or another service to continue
         </CardDescription>
       </CardHeader>
+      {!!error && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlert className="size-4" />
+          <p>{error}</p>
+        </div>
+      )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form onSubmit={onPasswordSignIn} className="space-y-2.5">
           <Input
-            disabled={false}
+            disabled={pending}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
@@ -48,7 +74,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             required
           />
           <Input
-            disabled={false}
+            disabled={pending}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
@@ -57,9 +83,9 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           />
           <Button
             type="submit"
-            disabled={false}
+            className="w-full bg-blue-900"
             size="lg"
-            className="w-full bg-[#1c325B]"
+            disabled={pending}
           >
             Continue
           </Button>
@@ -67,29 +93,31 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         <Separator />
         <div className="flex flex-col gap-y-2.5">
           <Button
-            disabled={false}
-            onClick={() => {}}
+            disabled={pending}
+            onClick={() => onProviderSignIn("google")}
             variant="outline"
+            size="lg"
             className="w-full relative"
           >
-            <FcGoogle className="size-5 absolute top-2.5 left-2.5" />
+            <FcGoogle className="size-5 absolute top-3 left-2.5" />
             Continue with Google
           </Button>
           <Button
-            disabled={false}
-            onClick={() => handleProviderSigin("github")}
+            disabled={pending}
+            onClick={() => onProviderSignIn("github")}
             variant="outline"
+            size="lg"
             className="w-full relative"
           >
-            <FaGithub className="size-5 absolute top-2.5 left-2.5" />
-            Continue with GitHub
+            <FaGithub className="size-5 absolute top-3 left-2.5" />
+            Continue with Github
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Don&apos;t have and account ?{" "}
+          Don&apos;t have an account?{" "}
           <span
-            className="text-sky-700 hover:underline cursor-pointer"
             onClick={() => setState("signUp")}
+            className="text-sky-700 hover:underline cursor-pointer"
           >
             Sign up
           </span>

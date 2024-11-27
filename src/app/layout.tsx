@@ -1,15 +1,19 @@
-import { ConvexClientProvider } from "@/components/convex-client-provider";
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
-
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+
+import { Modals } from "@/components/modals";
+import { Toaster } from "@/components/ui/sonner";
+import { JotaiProvider } from "@/components/jotai-provider";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
+
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "appnovia share",
-  description: "slack share",
+  title: "NoviaTeams",
+  description: "Communicate, Collaborate",
 };
 
 export default function RootLayout({
@@ -18,12 +22,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ConvexAuthNextjsServerProvider>
-          <ConvexClientProvider>{children}</ConvexClientProvider>
-        </ConvexAuthNextjsServerProvider>
-      </body>
-    </html>
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <ConvexClientProvider>
+            <JotaiProvider>
+              <Toaster />
+              <Modals />
+              {children}
+            </JotaiProvider>
+          </ConvexClientProvider>
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
   );
 }
